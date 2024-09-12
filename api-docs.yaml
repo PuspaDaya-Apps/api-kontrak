@@ -1,0 +1,496 @@
+openapi: 3.0.0
+info:
+  title: Child Nutrition Monitoring API
+  description: API untuk sistem monitoring gizi anak
+  version: 1.0.0
+servers:
+  - url: http://localhost:8081
+paths:
+  /api/fhir/Patient:
+    get:
+      summary: Get all patients
+      responses:
+        '200':
+          description: A list of patients
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resourceType:
+                    type: string
+                    example: Bundle
+                  entry:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        resourceType:
+                          type: string
+                          example: Patient
+                        id:
+                          type: string
+                        identifier:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              system:
+                                type: string
+                              value:
+                                type: string
+                        name:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              use:
+                                type: string
+                              family:
+                                type: string
+                              given:
+                                type: array
+                                items:
+                                  type: string
+                        birthDate:
+                          type: string
+                          format: date
+                        gender:
+                          type: string
+                          enum:
+                            - male
+                            - female
+                        address:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              line:
+                                type: array
+                                items:
+                                  type: string
+                              city:
+                                type: string
+                              state:
+                                type: string
+                              postalCode:
+                                type: string
+                        contact:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              relationship:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    coding:
+                                      type: array
+                                      items:
+                                        type: object
+                                        properties:
+                                          system:
+                                            type: string
+                                          code:
+                                            type: string
+                                          display:
+                                            type: string
+                              name:
+                                type: object
+                                properties:
+                                  family:
+                                    type: string
+                                  given:
+                                    type: array
+                                    items:
+                                      type: string
+                              telecom:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    system:
+                                      type: string
+                                    value:
+                                      type: string
+    post:
+      summary: Add a new patient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resourceType:
+                  type: string
+                  example: Patient
+                id:
+                  type: string
+                identifier:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      system:
+                        type: string
+                      value:
+                        type: string
+                name:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      use:
+                        type: string
+                      family:
+                        type: string
+                      given:
+                        type: array
+                        items:
+                          type: string
+                birthDate:
+                  type: string
+                  format: date
+                gender:
+                  type: string
+                  enum:
+                    - male
+                    - female
+                address:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      line:
+                        type: array
+                        items:
+                          type: string
+                      city:
+                        type: string
+                      state:
+                        type: string
+                      postalCode:
+                        type: string
+                contact:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relationship:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            coding:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  system:
+                                    type: string
+                                  code:
+                                    type: string
+                                  display:
+                                    type: string
+                      name:
+                        type: object
+                        properties:
+                          family:
+                            type: string
+                          given:
+                            type: array
+                            items:
+                              type: string
+                      telecom:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            system:
+                              type: string
+                            value:
+                              type: string
+      responses:
+        '201':
+          description: Patient created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: uuid
+                  resourceType:
+                    type: string
+                    example: Patient
+                  message:
+                    type: string
+                    example: Patient added successfully
+
+  /api/fhir/Observation:
+    get:
+      summary: Get all observations
+      responses:
+        '200':
+          description: A list of observations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resourceType:
+                    type: string
+                    example: Bundle
+                  entry:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        resourceType:
+                          type: string
+                          example: Observation
+                        id:
+                          type: string
+                        status:
+                          type: string
+                        category:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              coding:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    system:
+                                      type: string
+                                    code:
+                                      type: string
+                        code:
+                          type: object
+                          properties:
+                            coding:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  system:
+                                    type: string
+                                  code:
+                                    type: string
+                                  display:
+                                    type: string
+                        subject:
+                          type: object
+                          properties:
+                            reference:
+                              type: string
+                        valueQuantity:
+                          type: object
+                          properties:
+                            value:
+                              type: number
+                            unit:
+                              type: string
+                            system:
+                              type: string
+                            code:
+                              type: string
+                        effectiveDateTime:
+                          type: string
+                          format: date-time
+    post:
+      summary: Add a new observation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resourceType:
+                  type: string
+                  example: Observation
+                id:
+                  type: string
+                status:
+                  type: string
+                  example: final
+                category:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      coding:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            system:
+                              type: string
+                            code:
+                              type: string
+                code:
+                  type: object
+                  properties:
+                    coding:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          system:
+                            type: string
+                          code:
+                            type: string
+                          display:
+                            type: string
+                subject:
+                  type: object
+                  properties:
+                    reference:
+                      type: string
+                      example: Patient/{uuid_anak}
+                valueQuantity:
+                  type: object
+                  properties:
+                    value:
+                      type: number
+                    unit:
+                      type: string
+                    system:
+                      type: string
+                    code:
+                      type: string
+                effectiveDateTime:
+                  type: string
+                  format: date-time
+      responses:
+        '201':
+          description: Observation created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: uuid
+                  resourceType:
+                    type: string
+                    example: Observation
+                  message:
+                    type: string
+                    example: Observation added successfully
+
+  /api/fhir/NutritionAssessment:
+    post:
+      summary: Add a nutrition assessment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resourceType:
+                  type: string
+                  example: NutritionAssessment
+                id:
+                  type: string
+                patient:
+                  type: object
+                  properties:
+                    reference:
+                      type: string
+                      example: Patient/{uuid_anak}
+                status:
+                  type: string
+                  example: completed
+                nutritionCondition:
+                  type: string
+                  example: normal
+                remarks:
+                  type: string
+      responses:
+        '201':
+          description: Nutrition assessment created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: uuid
+                  resourceType:
+                    type: string
+                    example: NutritionAssessment
+                  message:
+                    type: string
+                    example: Nutrition assessment added successfully
+
+  /api/fhir/Report:
+    get:
+      summary: Get all reports
+      responses:
+        '200':
+          description: A list of reports
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resourceType:
+                    type: string
+                    example: Bundle
+                  entry:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        resourceType:
+                          type: string
+                          example: Report
+                        id:
+                          type: string
+                        reportType:
+                          type: string
+                          example: stunting
+                        details:
+                          type: string
+    post:
+      summary: Add a new report
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resourceType:
+                  type: string
+                  example: Report
+                id:
+                  type: string
+                reportType:
+                  type: string
+                  example: stunting
+                details:
+                  type: string
+      responses:
+        '201':
+          description: Report created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: uuid
+                  resourceType:
+                    type: string
+                    example: Report
+                  message:
+                    type: string
+                    example: Report added successfully
